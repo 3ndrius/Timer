@@ -12,6 +12,19 @@ export default class App extends Component{
         <RoundedButton  title="Start" color='red' background='green' />
         <RoundedButton  title="Stop" color='yellow' background='gray' />
        </View>
+       <ScrollView style={styles.list}> 
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+        <Text style={styles.listText}> 03:33,55</Text>
+       </ScrollView>
      </View>
     );
   }
@@ -27,14 +40,14 @@ const styles = StyleSheet.create({
 
   },
   wrapper:{
-    backgroundColor: 'blue',
+   
     height:150,
     marginTop:50,
     alignItems: 'center',
     justifyContent: 'center',  
   },
   control:{
-    backgroundColor: 'yellow',
+ 
     height:150,
     alignItems: 'center',
     justifyContent: 'space-around',  
@@ -43,8 +56,18 @@ const styles = StyleSheet.create({
   timerText:{
     fontWeight:'normal',
     fontSize:45,
-    color:'white'
+    color:'black'
  },
+ list:{
+   flex:1,
+
+   justifyContent:'center',
+   alignItems:'center',
+  
+ },
+ listText:{
+   fontSize:20,
+ }
 
 
 });
