@@ -1,29 +1,57 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import RoundedButton from './components/RoundedButton';
+import { StyleSheet, Text, View, ScrollView, Button, Alert,  } from 'react-native';
+
+
 export default class App extends Component{
+
+ state = {
+   time: 0,
+   now: 0,
+   laps: [1, 2],
+   run:true
+ }
+
+  handleStartInterval = () => {
+    timeer = setInterval(() => {
+      this.setState({
+        time: new Date().getTime(),
+        run: false
+      })
+    }, 1000); 
+  }
+  handleLapInterval = () => {
+    this.setState({
+      laps: [...this.state.laps, this.state.time]
+    })
+  }
+
+  handleStopInterval = () => {
+    clearInterval(timeer);
+    this.setState({
+      run:true
+    })
+  }
+ 
   render() {
+
+    let lap = this.state.laps.map((item) => {return <Text> {item} </Text>})
     return (
      <View style={styles.container}>
        <View style={styles.wrapper}>
-          <Text style={styles.timerText}>03:01:04</Text>
+          <Text style={styles.timerText}>{this.state.time}</Text>
        </View>
        <View style={styles.control}>
-        <RoundedButton  title="Start" color='red' background='green' />
-        <RoundedButton  title="Stop" color='yellow' background='gray' />
+             <RoundedButton  title="Lap" color='yellow' background='gray'  click={this.handleLapInterval} />
+          {
+          this.state.run ?
+            <RoundedButton  title="Start" color='red' click={this.handleStartInterval}  background='green' />
+              :
+            <RoundedButton  title="Stop" color='red' click={this.handleStopInterval}  background='green' />
+          }
        </View>
        <ScrollView style={styles.list}> 
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
-        <Text style={styles.listText}> 03:33,55</Text>
+         {lap}
        </ScrollView>
      </View>
     );
@@ -67,7 +95,8 @@ const styles = StyleSheet.create({
  },
  listText:{
    fontSize:20,
- }
+ },
+
 
 
 });
