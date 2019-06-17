@@ -7,39 +7,31 @@ export default class App extends Component{
 
  state = {
    time: 0,
+   now: 0,
    laps: [1, 2],
    run:true
  }
 
-
-
   handleStartInterval = () => {
     timeer = setInterval(() => {
       this.setState({
-        time: this.state.time+1,
+        time: new Date().getTime(),
         run: false
       })
-    }, 1000);
-   
-     
+    }, 1000); 
   }
   handleLapInterval = () => {
-
-  //  Alert.alert('You tapped the button! stop')
-  // clearInterval(timeer);
-
     this.setState({
       laps: [...this.state.laps, this.state.time]
     })
-
   }
+
   handleStopInterval = () => {
     clearInterval(timeer);
     this.setState({
       run:true
     })
   }
-
  
   render() {
 
@@ -50,16 +42,16 @@ export default class App extends Component{
           <Text style={styles.timerText}>{this.state.time}</Text>
        </View>
        <View style={styles.control}>
-        <RoundedButton  title="Lap" color='yellow' background='gray'  click={this.handleLapInterval} />
-        {this.state.run ?
-        <RoundedButton  title="Start" color='red' click={this.handleStartInterval}  background='green' />
-          :
-        <RoundedButton  title="Stop" color='red' click={this.handleStopInterval}  background='green' />
-        }
+             <RoundedButton  title="Lap" color='yellow' background='gray'  click={this.handleLapInterval} />
+          {
+          this.state.run ?
+            <RoundedButton  title="Start" color='red' click={this.handleStartInterval}  background='green' />
+              :
+            <RoundedButton  title="Stop" color='red' click={this.handleStopInterval}  background='green' />
+          }
        </View>
        <ScrollView style={styles.list}> 
-      {lap}
-        
+         {lap}
        </ScrollView>
      </View>
     );
