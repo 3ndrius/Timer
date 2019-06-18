@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RoundedButton from './components/RoundedButton';
 import { StyleSheet, Text, View, ScrollView, Button, Alert,  } from 'react-native';
+import moment from 'moment';
 
 
 export default class App extends Component{
@@ -8,34 +9,43 @@ export default class App extends Component{
  state = {
    time: 0,
    now: 0,
-   laps: [1, 2],
-   run:true
+   laps: [0],
+   run:true,
  }
 
   handleStartInterval = () => {
+    const now = new Date().getTime();
     timeer = setInterval(() => {
       this.setState({
-        time: new Date().getTime(),
-        run: false
+        time: new Date().getTime()-now,
+        run: false,
+  
       })
-    }, 1000); 
+    }, 100);    
+  
+    this.setState({
+     
+      laps:[0]
+    })
   }
   handleLapInterval = () => {
+    let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
+
     this.setState({
-      laps: [...this.state.laps, this.state.time]
+      laps: [lap, ...this.state.laps]
     })
   }
 
   handleStopInterval = () => {
     clearInterval(timeer);
     this.setState({
-      run:true
+      run:true,
     })
   }
  
   render() {
 
-    let lap = this.state.laps.map((item) => {return <Text> {item} </Text>})
+    let lap = this.state.laps.map((item) => {return <Text style={{paddingTop:20}}> {item} </Text>})
     return (
      <View style={styles.container}>
        <View style={styles.wrapper}>
@@ -87,14 +97,13 @@ const styles = StyleSheet.create({
     color:'black'
  },
  list:{
-   flex:1,
-
-   justifyContent:'center',
+    height:400,
+     justifyContent:'center',
    alignItems:'center',
   
  },
  listText:{
-   fontSize:20,
+   fontSize:10,
  },
 
 
