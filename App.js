@@ -49,9 +49,6 @@ export default class App extends Component{
     let lap = this.state.laps.map((item) => {return  <DisplayTime time={item} style={styles.textWrapList} styleContainer={styles.listWrapper} />})
     return (
      <View style={styles.container}>
-       {/* <View style={styles.wrapper}>
-          <Text style={styles.timerText}>{this.state.time}</Text>
-       </View> */}
        <DisplayTime time={this.state.time} style={styles.textWrap} styleContainer={styles.wrapper}/>
        <View style={styles.control}>
              <RoundedButton  title="Lap" color='yellow' background='gray'  click={this.handleLapInterval} />
