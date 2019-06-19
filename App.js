@@ -32,7 +32,7 @@ export default class App extends Component{
     
     console.log("Lap: ", lap,"State time: ", this.state.time);
     this.setState({
-      laps: [lap, ...this.state.laps]
+      laps: [...this.state.laps, lap],
     })
     
   }
@@ -41,12 +41,13 @@ export default class App extends Component{
     let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
     this.setState({
       run:true,
-      laps: [lap, ...this.state.laps]
+      laps: [lap, ...this.state.laps],
     })
   }
 
   render() {
-    let lap = this.state.laps.map((item) => {return  <DisplayTime time={item} style={styles.textWrapList} styleContainer={styles.listWrapper} />})
+    let lap = this.state.laps.map((item, index) => {
+      return <View style={styles.listContainer}><Text>Lap{index}<Text></Text></Text><DisplayTime time={item} style={styles.textWrapList} styleContainer={styles.listWrapper} /></View> })
     return (
      <View style={styles.container}>
        <DisplayTime time={this.state.time} style={styles.textWrap} styleContainer={styles.wrapper}/>
@@ -89,6 +90,12 @@ const styles = StyleSheet.create({
   width:30,
   fontSize:20,
   fontWeight: 'bold',
+},
+listContainer: {
+  justifyContent:'space-between',
+  alignItems:'center',
+  flexDirection:'row'
+
 },
  list:{
     flex:1,
