@@ -3,6 +3,7 @@ import RoundedButton from './components/RoundedButton';
 import { StyleSheet, Text, View, ScrollView, Button, Alert,  } from 'react-native';
 import moment from 'moment';
 
+import DisplayTime from './components/DisplayTime';
 
 export default class App extends Component{
 
@@ -19,38 +20,37 @@ export default class App extends Component{
       this.setState({
         time: new Date().getTime()-now,
         run: false,
-  
       })
     }, 100);    
   
-    this.setState({
-     
+    this.setState({    
       laps:[0]
     })
   }
-  handleLapInterval = () => {
+    handleLapInterval = () => {
     let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
-
+    
+    console.log("Lap: ", lap,"State time: ", this.state.time);
     this.setState({
-      laps: [lap, ...this.state.laps]
+      laps: [...this.state.laps, lap],
     })
+    
   }
-
   handleStopInterval = () => {
     clearInterval(timeer);
+    let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
     this.setState({
       run:true,
+      laps: [lap, ...this.state.laps],
     })
   }
- 
-  render() {
 
-    let lap = this.state.laps.map((item) => {return <Text style={{paddingTop:20}}> {item} </Text>})
+  render() {
+    let lap = this.state.laps.map((item, index) => {
+      return <View style={styles.listContainer}><Text style={{paddingRight:10}}>Lap: {index}<Text></Text></Text><DisplayTime time={item} style={styles.textWrapList} styleContainer={styles.listWrapper} /></View> })
     return (
      <View style={styles.container}>
-       <View style={styles.wrapper}>
-          <Text style={styles.timerText}>{this.state.time}</Text>
-       </View>
+       <DisplayTime time={this.state.time} style={styles.textWrap} styleContainer={styles.wrapper}/>
        <View style={styles.control}>
              <RoundedButton  title="Lap" color='yellow' background='gray'  click={this.handleLapInterval} />
           {
@@ -66,23 +66,13 @@ export default class App extends Component{
      </View>
     );
   }
-
 }
-
 const styles = StyleSheet.create({
   container: {
     flex:1,
     backgroundColor: '#fff',
     color:'white',
     alignItems: 'stretch'
-
-  },
-  wrapper:{
-   
-    height:150,
-    marginTop:50,
-    alignItems: 'center',
-    justifyContent: 'center',  
   },
   control:{
  
@@ -96,16 +86,47 @@ const styles = StyleSheet.create({
     fontSize:45,
     color:'black'
  },
+ textWrap:{
+  width:30,
+  fontSize:20,
+  fontWeight: 'bold',
+},
+listContainer: {
+  justifyContent:'space-between',
+  alignItems:'center',
+  flexDirection:'row'
+
+},
  list:{
-    height:400,
-     justifyContent:'center',
-   alignItems:'center',
-  
+    flex:1,
+     justifyContent:'flex-start',
+   alignItems:'center', 
  },
  listText:{
    fontSize:10,
  },
-
-
-
+ wrapper:{    
+  height:150,
+  marginTop:50,
+  alignItems: 'center',
+  justifyContent: 'center' ,
+  flexDirection: 'row',
+},
+textWrap:{
+    width:68,
+    fontSize:40,
+    fontWeight: 'normal',
+},
+listWrapper:{  
+    height:30,
+    marginTop:10,
+    alignItems: 'center',
+    justifyContent: 'center' ,
+    flexDirection: 'row',
+  },
+  textWrapList:{
+    width:45,
+    fontSize:22,
+    fontWeight: 'normal',
+}
 });
