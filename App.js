@@ -47,7 +47,7 @@ export default class App extends Component{
 
   render() {
     let lap = this.state.laps.map((item, index) => {
-      return <View style={styles.listContainer}><Text>Lap{index}<Text></Text></Text><DisplayTime time={item} style={styles.textWrapList} styleContainer={styles.listWrapper} /></View> })
+      return <View style={styles.listContainer}><Text style={{paddingRight:10}}>Lap: {index}<Text></Text></Text><DisplayTime time={item} style={styles.textWrapList} styleContainer={styles.listWrapper} /></View> })
     return (
      <View style={styles.container}>
        <DisplayTime time={this.state.time} style={styles.textWrap} styleContainer={styles.wrapper}/>
@@ -99,7 +99,7 @@ listContainer: {
 },
  list:{
     flex:1,
-     justifyContent:'center',
+     justifyContent:'flex-start',
    alignItems:'center', 
  },
  listText:{
