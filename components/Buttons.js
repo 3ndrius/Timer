@@ -1,6 +1,6 @@
 import React from 'react'
 import {StyleSheet, Text, View, TouchableWithoutFeedback} from 'react-native';
-export default function RoundedButton({title, color, background, click}) {
+export default function Buttons({title, color, background, click}) {
     return (
         <TouchableWithoutFeedback  onPress={click} >
         <View  style={[styles.button, {backgroundColor: background}]}>
@@ -11,14 +11,18 @@ export default function RoundedButton({title, color, background, click}) {
 }
 const styles = StyleSheet.create({
    button:{
-     width:80,
-     height:80,
+     width:130,
+     height:32,
      alignItems: 'center',
      justifyContent: 'center',
-     borderRadius:40,
+     borderRadius:2,
+     marginBottom:10
 
    },
    text:{
-       fontSize:20
-   }  
+       fontSize:12,
+       fontWeight:'400'
+   }
+   
+  
   });

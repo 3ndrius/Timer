@@ -1,132 +1,48 @@
 import React, { Component } from 'react';
-import RoundedButton from './components/RoundedButton';
-import { StyleSheet, Text, View, ScrollView, Button, Alert,  } from 'react-native';
-import moment from 'moment';
+import { Text, View} from 'react-native';
+import {createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator} from 'react-navigation';
 
-import DisplayTime from './components/DisplayTime';
+import MenuDrawer from './components/MenuDrawer';
 
-export default class App extends Component{
+import LogicScreen from './screens/LogicScreen';
+import StatScreen from './screens/StatScreen';
+import SettingScreen from './screens/SettingScreen';
+import AddUserScreen from './screens/AddUserScreen';
 
- state = {
-   time: 0,
-   now: 0,
-   laps: [0],
-   run:true,
- }
 
-  handleStartInterval = () => {
-    const now = new Date().getTime();
-    timeer = setInterval(() => {
-      this.setState({
-        time: new Date().getTime()-now,
-        run: false,
-      })
-    }, 100);    
-  
-    this.setState({    
-      laps:[0]
-    })
+
+const DrawerConfig = {
+  drawerType: 'front',
+  edgeWidth: 100,
+  contentComponent: ({ navigation }) => {
+		return(<MenuDrawer navigation={navigation} />)
+	}
+}
+
+const MyDrawerNavigator = createDrawerNavigator({
+  Logic: {
+          screen: LogicScreen,
+         } ,
+  Statistics: {
+          screen: StatScreen
+         },
+  Settings : {
+         screen: SettingScreen
+        },
+  AddUser: {
+    screen: AddUserScreen 
   }
-    handleLapInterval = () => {
-    let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
-    
-    console.log("Lap: ", lap,"State time: ", this.state.time);
-    this.setState({
-      laps: [...this.state.laps, lap],
-    })
-    
-  }
-  handleStopInterval = () => {
-    clearInterval(timeer);
-    let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
-    this.setState({
-      run:true,
-      laps: [lap, ...this.state.laps],
-    })
-  }
+    },
+    DrawerConfig
+);
 
+const AppContainer = createAppContainer(MyDrawerNavigator);
+
+class App extends Component{
   render() {
-    let lap = this.state.laps.map((item, index) => {
-      return <View style={styles.listContainer}><Text style={{paddingRight:10}}>Lap: {index}<Text></Text></Text><DisplayTime time={item} style={styles.textWrapList} styleContainer={styles.listWrapper} /></View> })
-    return (
-     <View style={styles.container}>
-       <DisplayTime time={this.state.time} style={styles.textWrap} styleContainer={styles.wrapper}/>
-       <View style={styles.control}>
-             <RoundedButton  title="Lap" color='yellow' background='gray'  click={this.handleLapInterval} />
-          {
-          this.state.run ?
-            <RoundedButton  title="Start" color='red' click={this.handleStartInterval}  background='green' />
-              :
-            <RoundedButton  title="Stop" color='red' click={this.handleStopInterval}  background='green' />
-          }
-       </View>
-       <ScrollView style={styles.list}> 
-         {lap}
-       </ScrollView>
-     </View>
-    );
+    return <AppContainer />
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    backgroundColor: '#fff',
-    color:'white',
-    alignItems: 'stretch'
-  },
-  control:{
- 
-    height:150,
-    alignItems: 'center',
-    justifyContent: 'space-around',  
-    flexDirection:'row'
-  },
-  timerText:{
-    fontWeight:'normal',
-    fontSize:45,
-    color:'black'
- },
- textWrap:{
-  width:30,
-  fontSize:20,
-  fontWeight: 'bold',
-},
-listContainer: {
-  justifyContent:'space-between',
-  alignItems:'center',
-  flexDirection:'row'
 
-},
- list:{
-    flex:1,
-     justifyContent:'flex-start',
-   alignItems:'center', 
- },
- listText:{
-   fontSize:10,
- },
- wrapper:{    
-  height:150,
-  marginTop:50,
-  alignItems: 'center',
-  justifyContent: 'center' ,
-  flexDirection: 'row',
-},
-textWrap:{
-    width:68,
-    fontSize:40,
-    fontWeight: 'normal',
-},
-listWrapper:{  
-    height:30,
-    marginTop:10,
-    alignItems: 'center',
-    justifyContent: 'center' ,
-    flexDirection: 'row',
-  },
-  textWrapList:{
-    width:45,
-    fontSize:22,
-    fontWeight: 'normal',
-}
-});
+ 
+export default App;
