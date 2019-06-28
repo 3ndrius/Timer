@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import Buttons from '../components/Buttons';
 import { StyleSheet, Text, View, ScrollView, Button, Alert,  Image, TouchableWithoutFeedback} from 'react-native';
 import moment from 'moment';
-import Storage from 'react-native-storage';
-import AsyncStorage from '@react-native-community/async-storage';
+// import Storage from 'react-native-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import DisplayTime from '../components/DisplayTime';
 
-const storage = new Storage({
-    size: 1000,
-    storageBackend: AsyncStorage, 
-    defaultExpires: 1000 * 3600 * 24,
-    enableCache: true,
-    sync: {
-      // we'll talk about the details later.
-    }
-  });
+// const storage = new Storage({
+//     size: 1000,
+//     storageBackend: AsyncStorage, 
+//     defaultExpires: 1000 * 3600 * 24,
+//     enableCache: true,
+//     sync: {
+//       // we'll talk about the details later.
+//     }
+//   });
 class LogicScreen extends Component {
   
     state = {
@@ -63,45 +63,45 @@ class LogicScreen extends Component {
                   shots: this.state.laps
                  }  
            });
-           let userA = {
-             name: 'JohnDoe',
-             date: this.state.now,
-             tags: this.state.laps
-           };
-           storage.save({
-             key: 'user', // Note: Do not use underscore("_") in key!
-             id: '1001', // Note: Do not use underscore("_") in id!
-             data: userA,
-             expires: 1000 * 60
-           });
+          //  let userA = {
+          //    name: 'JohnDoe',
+          //    date: this.state.now,
+          //    tags: this.state.laps
+          //  };
+          //  storage.save({
+          //    key: 'user', // Note: Do not use underscore("_") in key!
+          //    id: '1001', // Note: Do not use underscore("_") in id!
+          //    data: userA,
+          //    expires: 1000 * 60
+          //  });
           
            Alert.alert('Data saved successfully');
        }
      
      
        handleRecieveData = () => {
-         storage
-         .load({
-           key: 'user',
-           id: '1001'
-         })
-         .then(ret => {
-           // found data goes to then()
-           console.log(ret);
-         })
-         .catch(err => {
-           // any exception including data not found
-           // goes to catch()
-           console.warn(err.message);
-           switch (err.name) {
-             case 'NotFoundError':
-               // TODO;
-               break;
-             case 'ExpiredError':
-               // TODO
-               break;
-           }
-         });
+        //  storage
+        //  .load({
+        //    key: 'user',
+        //    id: '1001'
+        //  })
+        //  .then(ret => {
+        //    // found data goes to then()
+        //    console.log(ret);
+        //  })
+        //  .catch(err => {
+        //    // any exception including data not found
+        //    // goes to catch()
+        //    console.warn(err.message);
+        //    switch (err.name) {
+        //      case 'NotFoundError':
+        //        // TODO;
+        //        break;
+        //      case 'ExpiredError':
+        //        // TODO
+        //        break;
+        //    }
+        //  });
      
        }
       
