@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-community/async-storage';
-import moment from 'moment';
+
 import DisplayTime from '../components/DisplayTime';
 
 import {
