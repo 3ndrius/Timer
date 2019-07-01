@@ -22,8 +22,7 @@ class LogicScreen extends Component {
         now: 0,
         laps: [0],
         run:true,
-        data: {},
-        speed: 13
+        data: [],
       }
      
        handleStartInterval = () => {
@@ -33,18 +32,17 @@ class LogicScreen extends Component {
              time: new Date().getTime()-now,
              run: false,
            })
-         }, 100);    
+         }, 100); 
          this.setState({    
            laps:[0],
-           now: moment().format("MMM Do YY")
+           now: moment().format("MMM Do YY"),
          })
        }
          handleLapInterval = () => {
          let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
-         
-         console.log("Lap: ", lap,"State time: ", this.state.time);
          this.setState({
            laps: [...this.state.laps, lap],
+           
          })
          
        }
@@ -54,69 +52,43 @@ class LogicScreen extends Component {
          this.setState({
            run:true,
            laps: [...this.state.laps, lap],
+           
          })
        }
        handleSave = () => {
-         this.setState({
-           data: {user: 'John Doe',
-                  date: this.state.now,
-                  shots: this.state.laps
-                 }  
-           });
+     
            let userA = {
-             name: 'JohnDoe',
+             name: 'John Doe',
              date: this.state.now,
              tags: this.state.laps
            };
+            
            storage.save({
-             key: 'user', // Note: Do not use underscore("_") in key!
-             id: '1001', // Note: Do not use underscore("_") in id!
+            key: '0123',
+            id: 'privateIds',
              data: userA,
              expires: 1000 * 60
            });
           
            Alert.alert('Data saved successfully');
+           
        }
-     
-     
-       handleRecieveData = () => {
-         storage
-         .load({
-           key: 'user',
-           id: '1001'
-         })
-         .then(ret => {
-           // found data goes to then()
-           console.log(ret);
-         })
-         .catch(err => {
-           // any exception including data not found
-           // goes to catch()
-           console.warn(err.message);
-           switch (err.name) {
-             case 'NotFoundError':
-               // TODO;
-               break;
-             case 'ExpiredError':
-               // TODO
-               break;
-           }
-         });
-     
-       }
-      
+           
      handleNavigateStat = () => {
-        this.props.navigation.navigate('Statistics');
+        this.props.navigation.navigate('Statistics', {
+         
+        });
+        
+        
      }
      handleNavigateUser = () => {
       this.props.navigation.navigate('AddUser');
    }
        render() {
-         console.log("State", this.state.data);  
+        
          let lap = this.state.laps.map((item, index) => {
            return <View key={index} style={styles.listContainer}>
                <Text style={styles.textWrapList}>Shot: #{index}</Text>
-               <Text style={{color:'#485664', fontSize:9}}>{this.state.speed} km/h</Text>
                <DisplayTime time={item} style={styles.textWrapList} timeContainerText={styles.listTimeText} timeContainer={styles.listWrapper} displaySpeed={styles.displaySpeedMini}/>
              </View> })
          return (

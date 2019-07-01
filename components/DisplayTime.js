@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TouchableWithoutFeedback} from 'react-native';
 import moment from 'moment';
 
-export default function DisplayTime({time, timeContainerText, timeContainer, timeBorderWrap, click, displaySpeed, speed } ) {
+export default function DisplayTime({time, timeContainerText, timeContainer, timeBorderWrap, click} ) {
 
     const zero = (n) => n < 10 ? '0' + n : n
     const duration = moment.duration(time);
@@ -17,7 +17,6 @@ export default function DisplayTime({time, timeContainerText, timeContainer, tim
         <Text style={timeContainerText}>{zero(milisec)}</Text>
         
       </View>
-      <Text style={displaySpeed}>{speed} KM/h</Text>
     </View>
   </TouchableWithoutFeedback>
     )
