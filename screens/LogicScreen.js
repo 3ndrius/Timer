@@ -14,9 +14,7 @@ class LogicScreen extends Component {
         now: 0,
         laps: [0],
         run:true,
-        data: [],
-        lists: []
-        
+        data: [],        
       }
      
        handleStartInterval = () => {
@@ -30,7 +28,7 @@ class LogicScreen extends Component {
          this.setState({    
            laps:[0],
            now: moment().format("MMM Do YY"),
-         })
+         });
        }
          handleLapInterval = () => {
          let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
@@ -47,6 +45,8 @@ class LogicScreen extends Component {
          })
        }
        handleSave = () => {  
+
+
         const now = new Date().getTime();
         const count = this.state.laps.map((item, index) => index)
         let user = {
@@ -55,13 +55,11 @@ class LogicScreen extends Component {
           laps: this.state.laps,
           count: count,     
         };
-        this.setState({
-          lists: [...this.state.lists, user],
-        });
-           console.log("Lists: ", this.state.lists);
+      
+          
         (_storeData = async () => {
           try {
-            await AsyncStorage.setItem('Tasks',JSON.stringify(user));
+            await AsyncStorage.setItem('Time',JSON.stringify(user));
           } catch (error) {
             // Error saving data
           }

@@ -26,14 +26,11 @@ export default class StatScreen extends Component {
       // (_retrieveData = async () => {
         try { 
           const value = await AsyncStorage.getItem('Time');
-          // const allValue = await AsyncStorage.getItem('allTime');
           const parseData = JSON.parse(value);
-          // const allData = JSON.parse(allValue);
+    
           if (value !== null) {
             // We have data!!
 
-            console.log(parseData);
-            // console.log(allData);
             this.setState({
               laps: parseData.laps,
               date: parseData.date,
