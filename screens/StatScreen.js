@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
-import Storage from 'react-native-storage';
-import AsyncStorage from '@react-native-community/async-storage';
+import { Text, View, StyleSheet, ScrollView, Dimensions, AsyncStorage} from 'react-native';
 
 import DisplayTime from '../components/DisplayTime';
 
@@ -14,59 +12,43 @@ import {
   StackedBarChart
 } from 'react-native-chart-kit'
 
-
-const storage = new Storage({
-  size: 1000,
-  storageBackend: AsyncStorage, 
-  defaultExpires: 1000 * 3600 * 24,
-  enableCache: true,
-  sync: {
-  }
-});
-
-
-
 export default class StatScreen extends Component {
 
     state = { 
       user: '',
       laps: [5, 10, 5, 10],
       date: '',
-      count : []
+      count: [],      
     }
-    componentDidMount = () => {      
-      storage
-      .load({
-        key: '0123',
-        id: 'privateIds',
-      })
-      .then(ret => {
-        // found data goes to then()
-      
-        let count = ret.tags.map((item, index) => index);      
-        this.setState({
-          user: ret,
-          laps: ret.tags,
-          date: ret.date,
-          count: count,
+    
+    componentDidMount = async () => {    
+  
+      // (_retrieveData = async () => {
+        try { 
+          const value = await AsyncStorage.getItem('Time');
+          // const allValue = await AsyncStorage.getItem('allTime');
+          const parseData = JSON.parse(value);
+          // const allData = JSON.parse(allValue);
+          if (value !== null) {
+            // We have data!!
 
-        })
-      })
-      .catch(err => {
-        // any exception including data not found
-        // goes to catch()
-        console.warn(err.message);
-        switch (err.name) {
-          case 'NotFoundError':
-            // TODO;
-            break;
-          case 'ExpiredError':
-            // TODO
-            break;
+            console.log(parseData);
+            // console.log(allData);
+            this.setState({
+              laps: parseData.laps,
+              date: parseData.date,
+              count: parseData.count
+            })
+
+          }
+        } catch (error) {
+          // Error retrieving data
         }
-      }); 
+      // })();
+      
     }
     render() {
+     
       let lap = this.state.laps.map((item, index) => {
         return <View key={index} style={styles.listContainer}>
             <Text style={styles.textWrapList}>Shot: #{index}</Text>
@@ -120,7 +102,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#113340',
     alignItems: 'stretch',
     paddingLeft: 20,
-    paddingRight:20
+    paddingRight:20,
+    paddingTop:25
   },
   control:{
     height:50,
