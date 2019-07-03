@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import Buttons from '../components/Buttons';
-import { StyleSheet, Text, View, ScrollView, Button, Alert,  Image, TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, Alert,  Image, TouchableWithoutFeedback, AsyncStorage} from 'react-native';
 import moment from 'moment';
-import Storage from 'react-native-storage';
-import AsyncStorage from '@react-native-community/async-storage';
+// import Storage from 'react-native-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+
 import DisplayTime from '../components/DisplayTime';
 
-const storage = new Storage({
-    size: 1000,
-    storageBackend: AsyncStorage, 
-    defaultExpires: 1000 * 3600 * 24,
-    enableCache: true,
-    sync: {
-      // we'll talk about the details later.
-    }
-  });
 class LogicScreen extends Component {
   
     state = {
@@ -22,7 +14,7 @@ class LogicScreen extends Component {
         now: 0,
         laps: [0],
         run:true,
-        data: [],
+        data: [],        
       }
      
        handleStartInterval = () => {
@@ -36,15 +28,13 @@ class LogicScreen extends Component {
          this.setState({    
            laps:[0],
            now: moment().format("MMM Do YY"),
-         })
+         });
        }
          handleLapInterval = () => {
          let lap = this.state.time - this.state.laps.reduce((a,b)=> { return a+b});
          this.setState({
            laps: [...this.state.laps, lap],
-           
-         })
-         
+         })  
        }
        handleStopInterval = () => {
          clearInterval(timeer);
@@ -52,34 +42,35 @@ class LogicScreen extends Component {
          this.setState({
            run:true,
            laps: [...this.state.laps, lap],
-           
          })
        }
-       handleSave = () => {
-     
-           let userA = {
-             name: 'John Doe',
-             date: this.state.now,
-             tags: this.state.laps
-           };
-            
-           storage.save({
-            key: '0123',
-            id: 'privateIds',
-             data: userA,
-             expires: 1000 * 60
-           });
+       handleSave = () => {  
+
+
+        const now = new Date().getTime();
+        const count = this.state.laps.map((item, index) => index)
+        let user = {
+          name: 'John',
+          date: this.state.now,
+          laps: this.state.laps,
+          count: count,     
+        };
+      
           
-           Alert.alert('Data saved successfully');
-           
+        (_storeData = async () => {
+          try {
+            await AsyncStorage.setItem('Time',JSON.stringify(user));
+          } catch (error) {
+            // Error saving data
+          }
+        })();
+          Alert.alert('Data saved successfully');   
        }
            
      handleNavigateStat = () => {
         this.props.navigation.navigate('Statistics', {
-         
-        });
         
-        
+        });        
      }
      handleNavigateUser = () => {
       this.props.navigation.navigate('AddUser');
@@ -138,7 +129,8 @@ class LogicScreen extends Component {
          backgroundColor: '#113340',
          alignItems: 'stretch',
          paddingLeft: 20,
-         paddingRight:20
+         paddingRight:20,
+         paddingTop:25
        },
        control:{
          height:50,
